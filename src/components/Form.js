@@ -1,7 +1,7 @@
 import React from 'react';
 import uniqueId from 'react-html-id';
 
-const Form = ({ inputText, setInputText, todos, setTodos }) => {
+const Form = ({ inputText, setInputText, todos, setTodos, setStatus }) => {
   uniqueId.enableUniqueIds(Form)
 
   const inputTextHandler = (e) => {
@@ -16,6 +16,10 @@ const Form = ({ inputText, setInputText, todos, setTodos }) => {
     setInputText("");
   };
 
+  const statusHandler = (e) => {
+    setStatus(e.target.value);
+  };
+
   return (
     <div className="col-8 mx-auto">
       <form className="d-flex">
@@ -27,7 +31,7 @@ const Form = ({ inputText, setInputText, todos, setTodos }) => {
         </div>
 
         <div className="mb-3 input-group">
-          <select className="form-select" name="TodoStatus" id="TodoStatus">
+          <select className="form-select" name="TodoStatus" id="TodoStatus" onChange={statusHandler}>
             <option value="all">All</option>
             <option value="completed">Completed</option>
             <option value="uncompleted">Uncompleted</option>
