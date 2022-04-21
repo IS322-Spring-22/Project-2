@@ -1,7 +1,24 @@
 import logo from './logo.svg';
 import './App.css';
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 function App() {
+  const [columnData, setColumnData] = useState([]);
+
+  useEffect(() => {
+    axios.get("https://my-json-server.typicode.com/IS322-Spring-22/Project-2/columns")
+      .then(response => {
+        setColumnData(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
+
+
+
   return (
     <div className="App">
       <header className="App-header">
