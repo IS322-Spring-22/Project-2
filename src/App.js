@@ -3,12 +3,24 @@ import './App.css';
 import {useEffect, useState} from "react";
 import axios from "axios";
 
+let assignTaskParentID = (task, parentID) => {
+    task.parentID = parentID;
+    return task;
+};
+
 function App() {
   const [columnData, setColumnData] = useState([]);
 
   useEffect(() => {
     axios.get("https://my-json-server.typicode.com/IS322-Spring-22/Project-2/columns")
       .then(response => {
+        response.data.map(column => {
+          if (column.tasks) {
+            column.tasks.map(task => {
+              assignTaskParentID(task, column.id);
+            });
+          }
+        });
         setColumnData(response.data);
         console.log(response.data);
       })
