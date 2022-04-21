@@ -18,9 +18,10 @@ const Todo = ({todo, setTodos, todoList}) => {
   };
 
   return (
-    <div className={`card ${todo.completed ? 'border border-success' : ''}`} id={todo.id}>
+    <div className={`card ${todo.completed ? 'border border-success' : ''}`} key={todo.id}>
       <div className="card-body d-flex align-items-center">
         <h4 className={`flex-fill`}>{todo.completed ? <del>{todo.text}</del> : `${todo.text}`}</h4>
+        <h4 className={`flex-fill`}>{todo.type}</h4>
         <div className="row gx-3">
           <div className="col">
             <button className="btn btn-primary" onClick={completeHandler}>

@@ -1,41 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import uniqueId from 'react-html-id';
 
 const Form = ({ inputText, setInputText, todos, setTodos, setStatus }) => {
+  const [type, setType] = useState('Task');
+
   uniqueId.enableUniqueIds(Form)
 
   const inputTextHandler = (e) => {
     setInputText(e.target.value);
   };
 
+  const typeHandler = (e) => {
+    setType(e.target.value)
+  };
+
   const submitTodoHandler = (e) => {
     e.preventDefault();
     setTodos([
-      ...todos, {text: inputText, completed: false, id:Form.nextUniqueId()}
+      ...todos, {text: inputText, status: 'Todo', type: type, id:Form.nextUniqueId()}
     ]);
     setInputText("");
-  };
-
-  const statusHandler = (e) => {
-    setStatus(e.target.value);
   };
 
   return (
     <div className="col-8 mx-auto">
       <form className="d-flex">
         <div className="mb-3 input-group me-3">
-          <input className="form-control" type="text" id="TodoInput" placeholder="Enter Todo:" onChange={inputTextHandler} value={inputText}/>
+          <input className="form-control" type="text" id="TodoInput" placeholder="Add Task" onChange={inputTextHandler} value={inputText}/>
+          <select className="form-select" id="TodoType" placeholder="Enter Todo:" onChange={typeHandler}>
+            <option value="Task">Task</option>
+            <option value="Feature">Feature</option>
+            <option value="Bug">Bug</option>
+          </select>
           <button onClick={submitTodoHandler} className="input-group-text btn btn-success" type="submit">
             <i className="bi bi-plus-lg"></i>
           </button>
-        </div>
-
-        <div className="mb-3 input-group">
-          <select className="form-select" name="TodoStatus" id="TodoStatus" onChange={statusHandler}>
-            <option value="all">All</option>
-            <option value="completed">Completed</option>
-            <option value="uncompleted">Uncompleted</option>
-          </select>
         </div>
       </form>
     </div>
