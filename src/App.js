@@ -7,28 +7,21 @@ function App() {
   //State declarations
   const [inputText, setInputText] = useState("");
   const [todos, setTodos] = useState([]);
-  const [type, setType] = useState('all');
+  const [type, setType] = useState('All');
+  const [status, setStatus] = useState('Todo');
   const [ filteredTodos, setFilteredTodos ] = useState([]);
   const [ currentPage, setCurrentPage ] = useState('');
 
   //use effects
-  useEffect(() => filterHandler(), [todos, type]);
+  useEffect(() => filterHandler(), [todos, type, status]);
 
   //Functions
   const filterHandler = () => {
     switch(type){
-      case 'Task':
-        setFilteredTodos(todos.filter(todo => todo.type === 'Task'));
-        break;
-      case 'Feature':
-        setFilteredTodos(todos.filter(todo => todo.type === 'Feature'));
-        break;
-      case 'Bug':
-        setFilteredTodos(todos.filter(todo => todo.type === 'Bug'));
-        break;
+      case 'All':
+        return setFilteredTodos(todos.filter(todo => todo.status === status))
       default:
-        setFilteredTodos(todos);
-        break;
+        return setFilteredTodos(todos.filter(todo => todo.type === type && todo.status === status))
     }
   };
 
@@ -49,6 +42,7 @@ function App() {
           todos={filteredTodos}
           type={type}
           setType={setType}
+          setStatus={setStatus}
         />);
     }
   }
