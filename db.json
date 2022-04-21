@@ -7,19 +7,19 @@
         {
           "id": "1",
           "name": "Create a new task",
-          "description": "Create a new task",
+          "type": "Task",
           "priority": "Low"
         },
         {
           "id": "2",
           "name": "Create another new task",
-          "description": "Create another new task",
+          "type": "Task",
           "priority": "Lowest"
         },
         {
           "id": "3",
           "name": "Create a third new task",
-          "description": "Create another new task",
+          "type": "Task",
           "priority": "Lowest"
         }
       ]
@@ -31,25 +31,25 @@
         {
           "id": "1",
           "name": "Circle",
-          "description": "Circle",
+          "type": "Task",
           "priority": "Low"
         },
         {
           "id": "2",
           "name": "Square",
-          "description": "Square",
+          "type": "Feature",
           "priority": "Normal"
         },
         {
           "id": "3",
           "name": "4-th Dimensional Shape",
-          "description": "4-th Dimensional Shape",
+          "type": "Feature",
           "priority": "High"
         },
         {
           "id": "4",
           "name": "Orb",
-          "description": "Orb",
+          "type": "Bug",
           "priority": "Highest"
         }
       ]
@@ -61,31 +61,31 @@
         {
           "id": "1",
           "name": "Server",
-          "description": "Server",
+          "type": "Task",
           "priority": "High"
         },
         {
           "id": "2",
           "name": "API",
-          "description": "API",
+          "type": "Feature",
           "priority": "Normal"
         },
         {
           "id": "3",
           "name": "Processing",
-          "description": "Processing",
+          "type": "Feature",
           "priority": "High"
         },
         {
           "id": "4",
           "name": "Other backend stuff",
-          "description": "Other backend stuff",
+          "type": "Feature",
           "priority": "Normal"
         },
         {
           "id": "5",
           "name": "Assign to intern",
-          "description": "Assign to intern",
+          "type": "Task",
           "priority": "Lowest"
         }
       ]
@@ -97,55 +97,55 @@
         {
           "id": "1",
           "name": "Line",
-          "description": "Line",
+          "type": "Task",
           "priority": "Highest"
         },
         {
           "id": "2",
           "name": "Rectangle",
-          "description": "Rectangle",
+          "type": "Feature",
           "priority": "High"
         },
         {
           "id": "3",
           "name": "Triangle",
-          "description": "Triangle",
+          "type": "Feature",
           "priority": "Normal"
         },
         {
           "id": "4",
           "name": "Other design stuff",
-          "description": "Other design stuff",
+          "type": "Task",
           "priority": "Low"
         },
         {
           "id": "5",
           "name": "Yell at programmers",
-          "description": "Yell at programmers",
+          "type": "Task",
           "priority": "Highest"
         },
         {
           "id": "6",
           "name": "Yell at interns",
-          "description": "Yell at interns",
+          "type": "Task",
           "priority": "Highest"
         },
         {
           "id": "7",
           "name": "Buy a new shirt",
-          "description": "Buy a new shirt",
+          "type": "Task",
           "priority": "Low"
         },
         {
           "id": "8",
           "name": "Eat a spaghetti",
-          "description": "Eat a spaghetti",
+          "type": "Bug",
           "priority": "Normal"
         },
         {
           "id": "9",
           "name": "Stop putting daily tasks in the company todo list",
-          "description": "Stop putting daily tasks in the company todo list",
+          "type": "Task",
           "priority": "Lowest"
         }
       ]
