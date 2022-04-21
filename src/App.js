@@ -11,7 +11,7 @@ function App() {
   const [columnData, setColumnData] = useState([]);
 
   useEffect(() => {
-    axios.get("https://my-json-server.typicode.com/IS322-Spring-22/Project-2/columns")
+    axios.get("https://my-json-server.typicode.com/IS322-Spring-22/Project-2/db")
       .then(response => {
         response.data.map(column => {
           if (column.tasks) {
