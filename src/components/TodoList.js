@@ -5,7 +5,6 @@ import ToDoTableRow from "./ToDo-Table-Row";
 const TodoList = ({todos, setTodos, setType}) => {
 
   const typeHandler = (e) => {
-    console.log(e.target.value);
     setType(e.target.value);
   };
 
