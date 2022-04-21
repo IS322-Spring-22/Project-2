@@ -7,16 +7,16 @@ function App() {
   //State declarations
   const [inputText, setInputText] = useState("");
   const [todos, setTodos] = useState([]);
-  const [status, setStatus] = useState('all');
+  const [type, setType] = useState('all');
   const [ filteredTodos, setFilteredTodos ] = useState([]);
   const [ currentPage, setCurrentPage ] = useState('');
 
   //use effects
-  useEffect(() => filterHandler(), [todos, status]);
+  useEffect(() => filterHandler(), [todos, type]);
 
   //Functions
   const filterHandler = () => {
-    switch(status){
+    switch(type){
       case 'Task':
         setFilteredTodos(todos.filter(todo => todo.type === 'Task'));
         break;
@@ -47,8 +47,8 @@ function App() {
         return(<TodoList
           setTodos={setTodos}
           todos={filteredTodos}
-          status={status}
-          setStatus={setStatus}
+          type={type}
+          setType={setType}
         />);
     }
   }
@@ -63,12 +63,12 @@ function App() {
           setInputText={setInputText}
           todos={todos}
           setTodos={setTodos}
-          setStatus={setStatus}
+          setType={setType}
         />
         <TodoList
           setTodos={setTodos}
           todos={filteredTodos}
-          status={status}
+          type={type}
         />*/}
         {pageDisplay(currentPage)}
 

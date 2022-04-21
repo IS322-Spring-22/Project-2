@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Todo = ({todo, setTodos, todoList}) => {
+const TodoCard = ({todo, setTodos, todoList}) => {
 
   const deleteHandler = () => {
     setTodos(todoList.filter((el) => el.id !== todo.id));
@@ -39,4 +39,4 @@ const Todo = ({todo, setTodos, todoList}) => {
   );
 }
 
-export default Todo;
+export default TodoCard;

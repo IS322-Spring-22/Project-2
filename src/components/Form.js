@@ -27,7 +27,7 @@ const Form = ({ inputText, setInputText, todos, setTodos, setStatus }) => {
       <form className="d-flex">
         <div className="mb-3 input-group me-3">
           <input className="form-control" type="text" id="TodoInput" placeholder="Add Task" onChange={inputTextHandler} value={inputText}/>
-          <select className="form-select" id="TodoType" placeholder="Enter Todo:" onChange={typeHandler}>
+          <select className="form-select" id="TodoType" placeholder="Enter TodoCard:" onChange={typeHandler}>
             <option value="Task">Task</option>
             <option value="Feature">Feature</option>
             <option value="Bug">Bug</option>
