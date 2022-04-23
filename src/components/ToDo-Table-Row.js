@@ -1,12 +1,12 @@
 import React from 'react';
 
-const ToDoTableRow = ({todo, setTodos, todoList}) =>{
+const ToDoTableRow = ({task}) =>{
 
   return (
-    <tr key={todo.id}>
-      <td>{todo.text}</td>
-      <td>{todo.status}</td>
-      <td>{todo.type}</td>
+    <tr key={task.id}>
+      <td>{task.title}</td>
+      <td>{task.status}</td>
+      <td>{task.Type}</td>
     </tr>
   );
 }

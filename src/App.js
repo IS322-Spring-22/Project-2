@@ -12,27 +12,26 @@ let assignTaskParentID = (task, parentID) => {
 function App() {
   //State declarations
   const [inputText, setInputText] = useState("");
-  const [todos, setTodos] = useState([]);
   const [type, setType] = useState('All');
-  const [status, setStatus] = useState('Todo');
-  const [ filteredTodos, setFilteredTodos ] = useState([]);
+  const [status, setStatus] = useState('task');
+  const [ filteredTodos, setFilteredTasks ] = useState([]);
   const [ currentPage, setCurrentPage ] = useState('');
-  const [columnData, setColumnData] = useState([]);
+  const [ tasksData, setTasksData] = useState([]);
 
   //use effects
-  useEffect(() => filterHandler(), [todos, type, status]);
+  useEffect(() => filterHandler(), [tasksData, type, status]);
 
   useEffect(() => {
-    axios.get("https://my-json-server.typicode.com/IS322-Spring-22/Project-2/db")
+    axios.get("https://my-json-server.typicode.com/IS322-Spring-22/Project-2/tasks")
       .then(response => {
-        response.data.map(column => {
-          if (column.tasks) {
-            column.tasks.map(task => {
-              assignTaskParentID(task, column.id);
+        response.data.map(task => {
+          if (task.tasks) {
+            task.tasks.map(task => {
+              assignTaskParentID(task, task.id);
             });
           }
         });
-        setColumnData(response.data);
+        setTasksData(response.data);
         console.log(response.data);
       })
       .catch(error => {
@@ -44,9 +43,9 @@ function App() {
   const filterHandler = () => {
     switch(type){
       case 'All':
-        return setFilteredTodos(todos.filter(todo => todo.status === status))
+        return setFilteredTasks(tasksData.filter(task => task.status === status))
       default:
-        return setFilteredTodos(todos.filter(todo => todo.type === type && todo.status === status))
+        return setFilteredTasks(tasksData.filter(task => task.type === type && task.status === status))
     }
   };
 
@@ -58,13 +57,13 @@ function App() {
         return (<Form
           inputText={inputText}
           setInputText={setInputText}
-          todos={todos}
-          setTodos={setTodos}
+          tasksData={tasksData}
+          setTasksData={setTasksData}
         />);
       case 'list':
         return(<TodoList
-          setTodos={setTodos}
-          todos={filteredTodos}
+          setTasksData={setTasksData}
+          tasksData={tasksData}
           type={type}
           setType={setType}
           setStatus={setStatus}
@@ -74,27 +73,27 @@ function App() {
 
   let functions = {
     getColumnNames: () => {
-      return columnData.map(column => {
-        return column.name;
+      return tasksData.map(task => {
+        return task.name;
       });
     },
     getColumnTasks: (columnID) => {
-      return columnData.find(column => column.id === columnID).tasks;
+      return tasksData.find(task => task.id === columnID).tasks;
     },
     getColumnTask: (columnID, taskID) => {
-      return columnData.find(column => column.id === columnID).tasks.find(task => task.id === taskID);
+      return tasksData.find(task => task.id === columnID).tasks.find(task => task.id === taskID);
     },
     getColumn: (columnID) => {
-      return columnData.find(column => column.id === columnID);
+      return tasksData.find(task => task.id === columnID);
     },
     getColumnID: (columnName) => {
-      return columnData.find(column => column.name === columnName).id;
+      return tasksData.find(task => task.name === columnName).id;
     },
     getColumnIndex: (columnID) => {
-      return columnData.findIndex(column => column.id === columnID);
+      return tasksData.findIndex(task => task.id === columnID);
     },
     getColumnTaskIndex: (columnID, taskID) => {
-      return columnData.find(column => column.id === columnID).tasks.findIndex(task => task.id === taskID);
+      return tasksData.find(task => task.id === columnID).tasks.findIndex(task => task.id === taskID);
     },
       moveTaskToPreviousColumn: (columnID, taskID) => {
           let columnIndex = functions.getColumnIndex(columnID);
@@ -103,7 +102,7 @@ function App() {
           if (previousColumnIndex < 0) {
               return;
           }
-          let previousColumnID = columnData[previousColumnIndex].id;
+          let previousColumnID = tasksData[previousColumnIndex].id;
           let previousColumnTasks = functions.getColumnTasks(previousColumnID);
           let currColumnTasks = functions.getColumnTasks(columnID);
           let task = currColumnTasks[taskIndex];
@@ -111,18 +110,18 @@ function App() {
           task.id = previousColumnTasks.length;
           task.parentID = previousColumnID;
           currColumnTasks.splice(taskIndex, 1);
-          columnData[previousColumnIndex].tasks = previousColumnTasks;
-          columnData[columnIndex].tasks = currColumnTasks;
-          setColumnData(columnData);
+          tasksData[previousColumnIndex].tasks = previousColumnTasks;
+          tasksData[columnIndex].tasks = currColumnTasks;
+          setTasksData(tasksData);
       },
       moveTaskToNextColumn: (columnID, taskID) => {
           let columnIndex = functions.getColumnIndex(columnID);
           let taskIndex = functions.getColumnTaskIndex(columnID, taskID);
           let nextColumnIndex = columnIndex + 1;
-          if (nextColumnIndex === columnData.length) {
+          if (nextColumnIndex === tasksData.length) {
               return;
           }
-          let nextColumnID = columnData[nextColumnIndex].id;
+          let nextColumnID = tasksData[nextColumnIndex].id;
           let nextColumnTasks = functions.getColumnTasks(nextColumnID);
           let currColumnTasks = functions.getColumnTasks(columnID);
           let task = currColumnTasks[taskIndex];
@@ -130,9 +129,9 @@ function App() {
           task.id = nextColumnTasks.length;
           task.parentID = nextColumnID;
           currColumnTasks.splice(taskIndex, 1);
-          columnData[nextColumnIndex].tasks = nextColumnTasks;
-          columnData[columnIndex].tasks = currColumnTasks;
-          setColumnData(columnData);
+          tasksData[nextColumnIndex].tasks = nextColumnTasks;
+          tasksData[columnIndex].tasks = currColumnTasks;
+          setTasksData(tasksData);
       },
       moveTaskToColumn: (columnID, taskID, newColumnID) => {
           let columnIndex = functions.getColumnIndex(columnID);
@@ -145,17 +144,17 @@ function App() {
           task.id = newColumnTasks.length;
           task.parentID = newColumnID;
           currColumnTasks.splice(taskIndex, 1);
-          columnData[newColumnIndex].tasks = newColumnTasks;
-          columnData[columnIndex].tasks = currColumnTasks;
-          setColumnData(columnData);
+          tasksData[newColumnIndex].tasks = newColumnTasks;
+          tasksData[columnIndex].tasks = currColumnTasks;
+          setTasksData(tasksData);
       },
       removeTask: (columnID, taskID) => {
           let columnIndex = functions.getColumnIndex(columnID);
           let taskIndex = functions.getColumnTaskIndex(columnID, taskID);
           let currColumnTasks = functions.getColumnTasks(columnID);
           currColumnTasks.splice(taskIndex, 1);
-          columnData[columnIndex].tasks = currColumnTasks;
-          setColumnData(columnData);
+          tasksData[columnIndex].tasks = currColumnTasks;
+          setTasksData(tasksData);
       },
       addTask: (columnID, task) => {
         // Tasks have a name, type, and priority
@@ -164,13 +163,13 @@ function App() {
           currColumnTasks.push(task);
           task.id = currColumnTasks.length;
           task.parentID = columnID;
-          columnData[columnIndex].tasks = currColumnTasks;
-          setColumnData(columnData);
+          tasksData[columnIndex].tasks = currColumnTasks;
+          setTasksData(tasksData);
       },
       getUniqueTaskTypes: () => {
           let uniqueTaskTypes = [];
-          for (let i = 0; i < columnData.length; i++) {
-              let currColumnTasks = functions.getColumnTasks(columnData[i].id);
+          for (let i = 0; i < tasksData.length; i++) {
+              let currColumnTasks = functions.getColumnTasks(tasksData[i].id);
               for (let j = 0; j < currColumnTasks.length; j++) {
                   let currTaskType = currColumnTasks[j].type;
                   if (!uniqueTaskTypes.includes(currTaskType)) {
@@ -182,8 +181,8 @@ function App() {
       },
       getUniqueTaskPriorities: () => {
           let uniqueTaskPriorities = [];
-          for (let i = 0; i < columnData.length; i++) {
-              let currColumnTasks = functions.getColumnTasks(columnData[i].id);
+          for (let i = 0; i < tasksData.length; i++) {
+              let currColumnTasks = functions.getColumnTasks(tasksData[i].id);
               for (let j = 0; j < currColumnTasks.length; j++) {
                   let currTaskPriority = currColumnTasks[j].priority;
                   if (!uniqueTaskPriorities.includes(currTaskPriority)) {
@@ -199,7 +198,7 @@ function App() {
     <div>
       <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage}/>
       <div className="container">
-        <h1 className="text-center">Ido's Todo List</h1>
+        <h1 className="text-center">Ido's task List</h1>
         {pageDisplay(currentPage)}
 
       </div>

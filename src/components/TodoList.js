@@ -2,7 +2,7 @@ import React from 'react';
 import TodoCard from "./Todo-Card";
 import ToDoTableRow from "./ToDo-Table-Row";
 
-const TodoList = ({todos, setTodos, setType, setStatus}) => {
+const TodoList = ({tasksData, setTasksData, setType, setStatus}) => {
 
   const typeHandler = (e) => {
     setType(e.target.value);
@@ -43,10 +43,8 @@ const TodoList = ({todos, setTodos, setType, setStatus}) => {
         </tr>
         </thead>
         <tbody>
-        {todos.map(todo =>(
-          <ToDoTableRow todoList={todos}
-                    setTodos={setTodos}
-                    todo={todo}/>
+        {tasksData.map(task =>(
+          <ToDoTableRow task={task}/>
         ))}
         </tbody>
       </table>

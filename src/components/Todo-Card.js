@@ -1,14 +1,14 @@
 import React from 'react';
 
-const TodoCard = ({todo, setTodos, todoList}) => {
+const TodoCard = ({tasksData, setTasksData, todoList}) => {
 
   const deleteHandler = () => {
-    setTodos(todoList.filter((el) => el.id !== todo.id));
+    setTasksData(todoList.filter((el) => el.id !== tasksData.id));
   };
 
   const completeHandler = () => {
-    setTodos(todoList.map((item) => {
-      if (item.id === todo.id) {
+    setTasksData(todoList.map((item) => {
+      if (item.id === tasksData.id) {
         return {
           ...item, completed: !item.completed
         }
@@ -18,10 +18,10 @@ const TodoCard = ({todo, setTodos, todoList}) => {
   };
 
   return (
-    <div className={`card ${todo.completed ? 'border border-success' : ''}`} key={todo.id}>
+    <div className={`card ${tasksData.completed ? 'border border-success' : ''}`} key={tasksData.id}>
       <div className="card-body d-flex align-items-center">
-        <h4 className={`flex-fill`}>{todo.completed ? <del>{todo.text}</del> : `${todo.text}`}</h4>
-        <h4 className={`flex-fill`}>{todo.type}</h4>
+        <h4 className={`flex-fill`}>{tasksData.completed ? <del>{tasksData.text}</del> : `${tasksData.text}`}</h4>
+        <h4 className={`flex-fill`}>{tasksData.type}</h4>
         <div className="row gx-3">
           <div className="col">
             <button className="btn btn-primary" onClick={completeHandler}>
