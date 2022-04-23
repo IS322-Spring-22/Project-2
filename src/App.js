@@ -14,7 +14,7 @@ function App() {
   const [inputText, setInputText] = useState("");
   const [type, setType] = useState('All');
   const [status, setStatus] = useState('task');
-  const [ filteredTodos, setFilteredTasks ] = useState([]);
+  const [ filteredTasks, setFilteredTasks ] = useState([]);
   const [ currentPage, setCurrentPage ] = useState('list');
   const [ tasksData, setTasksData] = useState([]);
   const [ columnData, setColumnData] = useState([]);
@@ -44,11 +44,14 @@ function App() {
 
   //Functions
   const filterHandler = () => {
-    switch(type){
-      case 'All':
-        return setFilteredTasks(tasksData.filter(task => task.status === status))
-      default:
-        return setFilteredTasks(tasksData.filter(task => task.type === type && task.status === status))
+    if(type === 'All' && status === 'All'){
+      return setFilteredTasks(tasksData)
+    }else if(type === 'All'){
+      return setFilteredTasks(tasksData.filter(task => task.status === status))
+    } else if(status === 'All'){
+      return setFilteredTasks(tasksData.filter(task => task.Type === type))
+    } else {
+      return setFilteredTasks(tasksData.filter(task => task.Type === type && task.status === status))
     }
   };
 
@@ -67,7 +70,7 @@ function App() {
       case 'list':
         return(<TodoList
           setTasksData={setTasksData}
-          tasksData={tasksData}
+          tasksData={filteredTasks}
           type={type}
           setType={setType}
           setStatus={setStatus}

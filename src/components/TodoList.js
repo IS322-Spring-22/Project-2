@@ -27,6 +27,7 @@ const TodoList = ({tasksData, setTasksData, setType, setStatus}) => {
         <div className="mb-3 me-3">
           <label className="form-label" htmlFor="StatusType">Task Status:</label>
           <select className="form-select" id="StatusType" onChange={statusHandler}>
+            <option value="All">All</option>
             <option value="Todo">Todo</option>
             <option value="In Progress">In Progress</option>
             <option value="Review">Review</option>
