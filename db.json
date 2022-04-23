@@ -60,5 +60,11 @@
       "status": "Review",
       "Type": "Feature"
     }
+  ],
+  "statusOrder": [
+    "Todo",
+    "In Progress",
+    "Review",
+    "Done"
   ]
 }
