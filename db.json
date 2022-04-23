@@ -62,9 +62,21 @@
     }
   ],
   "statusOrder": [
-    "Todo",
-    "In Progress",
-    "Review",
-    "Done"
+    {
+      "id": 1,
+      "name": "Todo"
+    },
+    {
+      "id": 2,
+      "name": "In Progress"
+    },
+    {
+      "id": 3,
+      "name": "Review"
+    },
+    {
+      "id": 4,
+      "name": "Done"
+    }
   ]
 }
