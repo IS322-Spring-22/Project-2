@@ -15,8 +15,9 @@ function App() {
   const [type, setType] = useState('All');
   const [status, setStatus] = useState('task');
   const [ filteredTodos, setFilteredTasks ] = useState([]);
-  const [ currentPage, setCurrentPage ] = useState('');
+  const [ currentPage, setCurrentPage ] = useState('list');
   const [ tasksData, setTasksData] = useState([]);
+  const [ columnData, setColumnData] = useState([]);
 
   //use effects
   useEffect(() => filterHandler(), [tasksData, type, status]);
@@ -24,19 +25,21 @@ function App() {
   useEffect(() => {
     axios.get("https://my-json-server.typicode.com/IS322-Spring-22/Project-2/tasks")
       .then(response => {
-        response.data.map(task => {
-          if (task.tasks) {
-            task.tasks.map(task => {
-              assignTaskParentID(task, task.id);
-            });
-          }
-        });
         setTasksData(response.data);
         console.log(response.data);
       })
       .catch(error => {
         console.log(error);
       });
+
+      axios.get("https://my-json-server.typicode.com/IS322-Spring-22/Project-2/statusOrder")
+          .then(response => {
+              setColumnData(response.data);
+              console.log(response.data);
+          })
+          .catch(error => {
+              console.log(error);
+          });
   }, []);
 
   //Functions
@@ -51,6 +54,7 @@ function App() {
 
   const pageDisplay = (currentPage) => {
     switch (currentPage){
+      default:
       case 'home':
         return (<h1>Home Page</h1>);
       case 'add':
@@ -72,125 +76,67 @@ function App() {
   }
 
   let functions = {
-    getColumnNames: () => {
-      return tasksData.map(task => {
-        return task.name;
+    getColumnsInOrder: () => {
+      return columnData.map(column => {
+        return column.name;
       });
     },
-    getColumnTasks: (columnID) => {
-      return tasksData.find(task => task.id === columnID).tasks;
+    getColumnTasks: (columnName) => {
+      return tasksData.filter(task => task.status === columnName);
     },
-    getColumnTask: (columnID, taskID) => {
-      return tasksData.find(task => task.id === columnID).tasks.find(task => task.id === taskID);
+    getTask: (taskID) => {
+      return tasksData.find(task => task.id === taskID);
     },
-    getColumn: (columnID) => {
-      return tasksData.find(task => task.id === columnID);
+      getTaskIndex(taskID) {
+          return tasksData.findIndex(task => task.id === taskID);
+      },
+    getColumnIndex: (columnName) => {
+      return columnData.findIndex(column => column.name === columnName);
     },
-    getColumnID: (columnName) => {
-      return tasksData.find(task => task.name === columnName).id;
-    },
-    getColumnIndex: (columnID) => {
-      return tasksData.findIndex(task => task.id === columnID);
-    },
-    getColumnTaskIndex: (columnID, taskID) => {
-      return tasksData.find(task => task.id === columnID).tasks.findIndex(task => task.id === taskID);
-    },
-      moveTaskToPreviousColumn: (columnID, taskID) => {
-          let columnIndex = functions.getColumnIndex(columnID);
-          let taskIndex = functions.getColumnTaskIndex(columnID, taskID);
-          let previousColumnIndex = columnIndex - 1;
-          if (previousColumnIndex < 0) {
-              return;
+      moveTaskToPreviousColumn: (taskID) => {
+        let task = functions.getTask(taskID);
+        let nextColumn = functions.getColumnIndex(task.status) + 1;
+        if (nextColumn < columnData.length) {
+            task.status = columnData[nextColumn].name;
+            setTasksData(tasksData);
+        }
+      },
+      moveTaskToNextColumn: (taskID) => {
+          let task = functions.getTask(taskID);
+          let nextColumn = functions.getColumnIndex(task.status) - 1;
+          if (nextColumn > -1) {
+              task.status = columnData[nextColumn].name;
+              setTasksData(tasksData);
           }
-          let previousColumnID = tasksData[previousColumnIndex].id;
-          let previousColumnTasks = functions.getColumnTasks(previousColumnID);
-          let currColumnTasks = functions.getColumnTasks(columnID);
-          let task = currColumnTasks[taskIndex];
-          previousColumnTasks.push(task);
-          task.id = previousColumnTasks.length;
-          task.parentID = previousColumnID;
-          currColumnTasks.splice(taskIndex, 1);
-          tasksData[previousColumnIndex].tasks = previousColumnTasks;
-          tasksData[columnIndex].tasks = currColumnTasks;
-          setTasksData(tasksData);
       },
-      moveTaskToNextColumn: (columnID, taskID) => {
-          let columnIndex = functions.getColumnIndex(columnID);
-          let taskIndex = functions.getColumnTaskIndex(columnID, taskID);
-          let nextColumnIndex = columnIndex + 1;
-          if (nextColumnIndex === tasksData.length) {
-              return;
-          }
-          let nextColumnID = tasksData[nextColumnIndex].id;
-          let nextColumnTasks = functions.getColumnTasks(nextColumnID);
-          let currColumnTasks = functions.getColumnTasks(columnID);
-          let task = currColumnTasks[taskIndex];
-          nextColumnTasks.push(task);
-          task.id = nextColumnTasks.length;
-          task.parentID = nextColumnID;
-          currColumnTasks.splice(taskIndex, 1);
-          tasksData[nextColumnIndex].tasks = nextColumnTasks;
-          tasksData[columnIndex].tasks = currColumnTasks;
-          setTasksData(tasksData);
+      moveTaskToColumn: (taskID, newColumnName) => {
+        let task = functions.getTask(taskID);
+        task.status = newColumnName;
+        setTasksData(tasksData);
       },
-      moveTaskToColumn: (columnID, taskID, newColumnID) => {
-          let columnIndex = functions.getColumnIndex(columnID);
-          let taskIndex = functions.getColumnTaskIndex(columnID, taskID);
-          let newColumnIndex = functions.getColumnIndex(newColumnID);
-          let newColumnTasks = functions.getColumnTasks(newColumnID);
-          let currColumnTasks = functions.getColumnTasks(columnID);
-          let task = currColumnTasks[taskIndex];
-          newColumnTasks.push(task);
-          task.id = newColumnTasks.length;
-          task.parentID = newColumnID;
-          currColumnTasks.splice(taskIndex, 1);
-          tasksData[newColumnIndex].tasks = newColumnTasks;
-          tasksData[columnIndex].tasks = currColumnTasks;
-          setTasksData(tasksData);
+      removeTask: (taskID) => {
+        let index = functions.getTaskIndex(taskID);
+        tasksData.splice(index, 1);
+        setTasksData(tasksData);
       },
-      removeTask: (columnID, taskID) => {
-          let columnIndex = functions.getColumnIndex(columnID);
-          let taskIndex = functions.getColumnTaskIndex(columnID, taskID);
-          let currColumnTasks = functions.getColumnTasks(columnID);
-          currColumnTasks.splice(taskIndex, 1);
-          tasksData[columnIndex].tasks = currColumnTasks;
-          setTasksData(tasksData);
-      },
-      addTask: (columnID, task) => {
-        // Tasks have a name, type, and priority
-          let columnIndex = functions.getColumnIndex(columnID);
-          let currColumnTasks = functions.getColumnTasks(columnID);
-          currColumnTasks.push(task);
-          task.id = currColumnTasks.length;
-          task.parentID = columnID;
-          tasksData[columnIndex].tasks = currColumnTasks;
-          setTasksData(tasksData);
+      addTask: (columnName, task) => {
+        let newTask = {
+          id: tasksData.length,
+          Type: task.Type,
+          status: columnName,
+          title: task.title
+        };
+        tasksData.push(newTask);
+        setTasksData(tasksData);
       },
       getUniqueTaskTypes: () => {
-          let uniqueTaskTypes = [];
-          for (let i = 0; i < tasksData.length; i++) {
-              let currColumnTasks = functions.getColumnTasks(tasksData[i].id);
-              for (let j = 0; j < currColumnTasks.length; j++) {
-                  let currTaskType = currColumnTasks[j].type;
-                  if (!uniqueTaskTypes.includes(currTaskType)) {
-                      uniqueTaskTypes.push(currTaskType);
-                  }
-              }
+        let types = [];
+        tasksData.forEach(task => {
+          if(!types.includes(task.Type)){
+            types.push(task.Type);
           }
-          return uniqueTaskTypes;
-      },
-      getUniqueTaskPriorities: () => {
-          let uniqueTaskPriorities = [];
-          for (let i = 0; i < tasksData.length; i++) {
-              let currColumnTasks = functions.getColumnTasks(tasksData[i].id);
-              for (let j = 0; j < currColumnTasks.length; j++) {
-                  let currTaskPriority = currColumnTasks[j].priority;
-                  if (!uniqueTaskPriorities.includes(currTaskPriority)) {
-                      uniqueTaskPriorities.push(currTaskPriority);
-                  }
-              }
-          }
-          return uniqueTaskPriorities;
+        });
+        return types;
       },
   }
 
