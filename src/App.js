@@ -1,5 +1,7 @@
-import './App.css';
-import {useEffect, useState} from "react";
+import React, { useState, useEffect } from 'react';
+import Form from "./components/Form";
+import TodoList from "./components/TodoList";
+import Navbar from "./components/Navbar";
 import axios from "axios";
 
 let assignTaskParentID = (task, parentID) => {
@@ -8,7 +10,17 @@ let assignTaskParentID = (task, parentID) => {
 };
 
 function App() {
+  //State declarations
+  const [inputText, setInputText] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [type, setType] = useState('All');
+  const [status, setStatus] = useState('Todo');
+  const [ filteredTodos, setFilteredTodos ] = useState([]);
+  const [ currentPage, setCurrentPage ] = useState('');
   const [columnData, setColumnData] = useState([]);
+
+  //use effects
+  useEffect(() => filterHandler(), [todos, type, status]);
 
   useEffect(() => {
     axios.get("https://my-json-server.typicode.com/IS322-Spring-22/Project-2/db")
@@ -27,6 +39,38 @@ function App() {
         console.log(error);
       });
   }, []);
+
+  //Functions
+  const filterHandler = () => {
+    switch(type){
+      case 'All':
+        return setFilteredTodos(todos.filter(todo => todo.status === status))
+      default:
+        return setFilteredTodos(todos.filter(todo => todo.type === type && todo.status === status))
+    }
+  };
+
+  const pageDisplay = (currentPage) => {
+    switch (currentPage){
+      case 'home':
+        return (<h1>Home Page</h1>);
+      case 'add':
+        return (<Form
+          inputText={inputText}
+          setInputText={setInputText}
+          todos={todos}
+          setTodos={setTodos}
+        />);
+      case 'list':
+        return(<TodoList
+          setTodos={setTodos}
+          todos={filteredTodos}
+          type={type}
+          setType={setType}
+          setStatus={setStatus}
+        />);
+    }
+  }
 
   let functions = {
     getColumnNames: () => {
@@ -152,12 +196,13 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Add your components here fellow code monkeys!
-        </p>
-      </header>
+    <div>
+      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+      <div className="container">
+        <h1 className="text-center">Ido's Todo List</h1>
+        {pageDisplay(currentPage)}
+
+      </div>
     </div>
   );
 }
