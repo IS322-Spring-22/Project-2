@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import uniqueId from 'react-html-id';
 
-const Form = ({ inputText, setInputText, tasksData, setTasksData, setStatus }) => {
+const Form = ({ inputText, setInputText, tasksData, setTasksData, functions }) => {
   const [type, setType] = useState('Task');
 
   uniqueId.enableUniqueIds(Form)
@@ -16,9 +16,7 @@ const Form = ({ inputText, setInputText, tasksData, setTasksData, setStatus }) =
 
   const submitTodoHandler = (e) => {
     e.preventDefault();
-    setTasksData([
-      ...tasksData, {title: inputText, status: 'Todo', Type: type, id:Form.nextUniqueId()}
-    ]);
+    functions.addTask(type, inputText)
     setInputText("");
   };
 

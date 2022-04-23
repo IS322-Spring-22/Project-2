@@ -13,7 +13,7 @@ function App() {
   //State declarations
   const [inputText, setInputText] = useState("");
   const [type, setType] = useState('All');
-  const [status, setStatus] = useState('task');
+  const [status, setStatus] = useState('All');
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [currentPage, setCurrentPage] = useState('list');
   const [tasksData, setTasksData] = useState([]);
@@ -126,9 +126,9 @@ function App() {
     addTask: (columnName, task) => {
       let newTask = {
         id: tasksData.length,
-        Type: task.Type,
-        status: columnName,
-        title: task.title
+        Type: columnName,
+        status: 'Todo',
+        title: task
       };
       tasksData.push(newTask);
       setTasksData(tasksData);
