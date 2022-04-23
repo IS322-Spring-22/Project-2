@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Form from "./components/Form";
 import TodoList from "./components/TodoList";
 import Navbar from "./components/Navbar";
 import axios from "axios";
 
 let assignTaskParentID = (task, parentID) => {
-    task.parentID = parentID;
-    return task;
+  task.parentID = parentID;
+  return task;
 };
 
 function App() {
@@ -14,10 +14,10 @@ function App() {
   const [inputText, setInputText] = useState("");
   const [type, setType] = useState('All');
   const [status, setStatus] = useState('task');
-  const [ filteredTasks, setFilteredTasks ] = useState([]);
-  const [ currentPage, setCurrentPage ] = useState('list');
-  const [ tasksData, setTasksData] = useState([]);
-  const [ columnData, setColumnData] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [currentPage, setCurrentPage] = useState('list');
+  const [tasksData, setTasksData] = useState([]);
+  const [columnData, setColumnData] = useState([]);
 
   //use effects
   useEffect(() => filterHandler(), [tasksData, type, status]);
@@ -32,23 +32,23 @@ function App() {
         console.log(error);
       });
 
-      axios.get("https://my-json-server.typicode.com/IS322-Spring-22/Project-2/statusOrder")
-          .then(response => {
-              setColumnData(response.data);
-              console.log(response.data);
-          })
-          .catch(error => {
-              console.log(error);
-          });
+    axios.get("https://my-json-server.typicode.com/IS322-Spring-22/Project-2/statusOrder")
+      .then(response => {
+        setColumnData(response.data);
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
 
   //Functions
   const filterHandler = () => {
-    if(type === 'All' && status === 'All'){
+    if (type === 'All' && status === 'All') {
       return setFilteredTasks(tasksData)
-    }else if(type === 'All'){
+    } else if (type === 'All') {
       return setFilteredTasks(tasksData.filter(task => task.status === status))
-    } else if(status === 'All'){
+    } else if (status === 'All') {
       return setFilteredTasks(tasksData.filter(task => task.Type === type))
     } else {
       return setFilteredTasks(tasksData.filter(task => task.Type === type && task.status === status))
@@ -56,7 +56,7 @@ function App() {
   };
 
   const pageDisplay = (currentPage) => {
-    switch (currentPage){
+    switch (currentPage) {
       default:
       case 'home':
         return (<h1>Home Page</h1>);
@@ -66,9 +66,10 @@ function App() {
           setInputText={setInputText}
           tasksData={tasksData}
           setTasksData={setTasksData}
+          functions={functions}
         />);
       case 'list':
-        return(<TodoList
+        return (<TodoList
           setTasksData={setTasksData}
           tasksData={filteredTasks}
           type={type}
@@ -90,57 +91,57 @@ function App() {
     getTask: (taskID) => {
       return tasksData.find(task => task.id === taskID);
     },
-      getTaskIndex(taskID) {
-          return tasksData.findIndex(task => task.id === taskID);
-      },
+    getTaskIndex(taskID) {
+      return tasksData.findIndex(task => task.id === taskID);
+    },
     getColumnIndex: (columnName) => {
       return columnData.findIndex(column => column.name === columnName);
     },
-      moveTaskToPreviousColumn: (taskID) => {
-        let task = functions.getTask(taskID);
-        let nextColumn = functions.getColumnIndex(task.status) + 1;
-        if (nextColumn < columnData.length) {
-            task.status = columnData[nextColumn].name;
-            setTasksData(tasksData);
+    moveTaskToPreviousColumn: (taskID) => {
+      let task = functions.getTask(taskID);
+      let nextColumn = functions.getColumnIndex(task.status) + 1;
+      if (nextColumn < columnData.length) {
+        task.status = columnData[nextColumn].name;
+        setTasksData(tasksData);
+      }
+    },
+    moveTaskToNextColumn: (taskID) => {
+      let task = functions.getTask(taskID);
+      let nextColumn = functions.getColumnIndex(task.status) - 1;
+      if (nextColumn > -1) {
+        task.status = columnData[nextColumn].name;
+        setTasksData(tasksData);
+      }
+    },
+    moveTaskToColumn: (taskID, newColumnName) => {
+      let task = functions.getTask(taskID);
+      task.status = newColumnName;
+      setTasksData(tasksData);
+    },
+    removeTask: (taskID) => {
+      let index = functions.getTaskIndex(taskID);
+      tasksData.splice(index, 1);
+      setTasksData(tasksData);
+    },
+    addTask: (columnName, task) => {
+      let newTask = {
+        id: tasksData.length,
+        Type: task.Type,
+        status: columnName,
+        title: task.title
+      };
+      tasksData.push(newTask);
+      setTasksData(tasksData);
+    },
+    getUniqueTaskTypes: () => {
+      let types = [];
+      tasksData.forEach(task => {
+        if (!types.includes(task.Type)) {
+          types.push(task.Type);
         }
-      },
-      moveTaskToNextColumn: (taskID) => {
-          let task = functions.getTask(taskID);
-          let nextColumn = functions.getColumnIndex(task.status) - 1;
-          if (nextColumn > -1) {
-              task.status = columnData[nextColumn].name;
-              setTasksData(tasksData);
-          }
-      },
-      moveTaskToColumn: (taskID, newColumnName) => {
-        let task = functions.getTask(taskID);
-        task.status = newColumnName;
-        setTasksData(tasksData);
-      },
-      removeTask: (taskID) => {
-        let index = functions.getTaskIndex(taskID);
-        tasksData.splice(index, 1);
-        setTasksData(tasksData);
-      },
-      addTask: (columnName, task) => {
-        let newTask = {
-          id: tasksData.length,
-          Type: task.Type,
-          status: columnName,
-          title: task.title
-        };
-        tasksData.push(newTask);
-        setTasksData(tasksData);
-      },
-      getUniqueTaskTypes: () => {
-        let types = [];
-        tasksData.forEach(task => {
-          if(!types.includes(task.Type)){
-            types.push(task.Type);
-          }
-        });
-        return types;
-      },
+      });
+      return types;
+    },
   }
 
   return (
