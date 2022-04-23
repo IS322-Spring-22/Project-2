@@ -15,7 +15,7 @@ function App() {
   const [type, setType] = useState('All');
   const [status, setStatus] = useState('task');
   const [ filteredTodos, setFilteredTasks ] = useState([]);
-  const [ currentPage, setCurrentPage ] = useState('');
+  const [ currentPage, setCurrentPage ] = useState('list');
   const [ tasksData, setTasksData] = useState([]);
   const [ columnData, setColumnData] = useState([]);
 
