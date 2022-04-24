@@ -1,42 +1,24 @@
 import React from 'react';
 
-const TodoCard = ({tasksData, setTasksData, todoList}) => {
+const ToDoCard = ({functions, task}) => {
 
-  const deleteHandler = () => {
-    setTasksData(todoList.filter((el) => el.id !== tasksData.id));
-  };
+    const advanceHandler = (e) => {
+        e.preventDefault();
+        functions.moveTaskToNextColumn(task.id);
+    };
 
-  const completeHandler = () => {
-    setTasksData(todoList.map((item) => {
-      if (item.id === tasksData.id) {
-        return {
-          ...item, completed: !item.completed
-        }
-      }
-      return item;
-    }));
-  };
-
-  return (
-    <div className={`card ${tasksData.completed ? 'border border-success' : ''}`} key={tasksData.id}>
-      <div className="card-body d-flex align-items-center">
-        <h4 className={`flex-fill`}>{tasksData.completed ? <del>{tasksData.text}</del> : `${tasksData.text}`}</h4>
-        <h4 className={`flex-fill`}>{tasksData.type}</h4>
-        <div className="row gx-3">
-          <div className="col">
-            <button className="btn btn-primary" onClick={completeHandler}>
-              <i className="bi bi-check-lg"></i>
-            </button>
-          </div>
-          <div className="col">
-            <button className="btn btn-danger" onClick={deleteHandler}>
-              <i className="bi bi-trash2"></i>
-            </button>
-          </div>
+    return (
+        <div className={`card`} key={task.id}>
+            <div className="card-body align-items-center">
+                <h5 className={``}>{task.title}</h5>
+                <p className="">ID: {task.id}</p>
+                <p>Type: {task.Type}</p>
+                <button className="btn btn-primary" onClick={advanceHandler}>
+                    <i className="bi bi-check-lg"></i>
+                </button>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
-export default TodoCard;
+export default ToDoCard;
