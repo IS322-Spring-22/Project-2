@@ -1,39 +1,11 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import ToDoCard from "./ToDo-Card";
 
-const TodoBoard = ({functions, tasksData, setTasksData, setType, setStatus}) => {
-
-    const typeHandler = (e) => {
-        setType(e.target.value);
-    };
-
-    const statusHandler = (e) => {
-        setStatus(e.target.value)
-    };
-
-    return(
-        <div className="container">
-            <form className="d-flex justify-content-center">
-                <div className="mb-3 me-3">
-                    <label className="form-label" htmlFor="TaskType">Task Type:</label>
-                    <select className="form-select" id="TaskType" onChange={typeHandler}>
-                        <option value="All">All</option>
-                        <option value="Task">Task</option>
-                        <option value="Feature">Feature</option>
-                        <option value="Bug">Bug</option>
-                    </select>
-                </div>
-                <div className="mb-3 me-3">
-                    <label className="form-label" htmlFor="StatusType">Task Status:</label>
-                    <select className="form-select" id="StatusType" onChange={statusHandler}>
-                        <option value="All">All</option>
-                        <option value="Todo">Todo</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Review">Review</option>
-                        <option value="Done">Done</option>
-                    </select>
-                </div>
-            </form>
+const TodoBoard = ({functions, tasksData}) => {
+    
+    const loadBoard = useCallback(() => {
+        console.log("loadBoard loaded.");
+        return(
             <div className="row alight-items-start">
                 <div className="col border rounded-3">
                     <h3>Todo</h3>
@@ -68,7 +40,11 @@ const TodoBoard = ({functions, tasksData, setTasksData, setType, setStatus}) => 
                     </div>
                 </div>
             </div>
-        </div>
+        );
+    }, [tasksData]);
+
+    return(
+        loadBoard()
     );
 };
 
