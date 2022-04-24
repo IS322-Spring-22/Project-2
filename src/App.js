@@ -80,11 +80,7 @@ function App() {
       case 'board':
         return (<TodoBoard
           functions={functions}
-          setTasksData={setTasksData}
-          tasksData={filteredTasks}
-          type={type}
-          setType={setType}
-          setStatus={setStatus}
+          tasksData={tasksData}
         />);
     }
   }
@@ -112,7 +108,7 @@ function App() {
       let nextColumn = functions.getColumnIndex(task.status) - 1;
       if (nextColumn < columnData.length) {
         task.status = columnData[nextColumn].name;
-        setTasksData(tasksData);
+        setTasksData([...tasksData]);
       }
     },
     moveTaskToNextColumn: (taskID) => {
@@ -120,7 +116,7 @@ function App() {
       let nextColumn = functions.getColumnIndex(task.status) + 1;
       if (nextColumn > -1) {
         task.status = columnData[nextColumn].name;
-        setTasksData(tasksData);
+        setTasksData([...tasksData]);
       }
     },
     moveTaskToColumn: (taskID, newColumnName) => {
