@@ -10,9 +10,9 @@ const ToDoCard = ({functions, task}) => {
     return (
         <div className={`card`} key={task.id}>
             <div className="card-body align-items-center">
-                <h5 className={``}>{task.title}</h5>
+                <h5 className="">{task.title}</h5>
+                <p className="">Type: {task.Type}</p>
                 <p className="">ID: {task.id}</p>
-                <p>Type: {task.Type}</p>
                 <button className="btn btn-primary" onClick={advanceHandler}>
                     <i className="bi bi-check-lg"></i>
                 </button>
