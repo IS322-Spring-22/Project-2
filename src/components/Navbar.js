@@ -14,6 +14,9 @@ const Navbar = ({ setCurrentPage , currentPage }) => {
       case 'list':
         setCurrentPage('list');
         break;
+      case 'board':
+        setCurrentPage('board');
+        break;
     }
   }
 
@@ -36,6 +39,9 @@ const Navbar = ({ setCurrentPage , currentPage }) => {
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#" onClick={currentPageHandler} id={'list'}>List View</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#" onClick={currentPageHandler} id={'board'}>Card View</a>
             </li>
           </ul>
         </div>

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Form from "./components/Form";
 import TodoList from "./components/TodoList";
+import TodoBoard from "./components/TodoBoard";
 import Navbar from "./components/Navbar";
 import axios from "axios";
 
@@ -75,6 +76,14 @@ function App() {
           type={type}
           setType={setType}
           setStatus={setStatus}
+        />);
+      case 'board':
+        return (<TodoBoard
+            setTasksData={setTasksData}
+            tasksData={filteredTasks}
+            type={type}
+            setType={setType}
+            setStatus={setStatus}
         />);
     }
   }
