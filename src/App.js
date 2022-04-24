@@ -79,6 +79,7 @@ function App() {
         />);
       case 'board':
         return (<TodoBoard
+          functions={functions}
           setTasksData={setTasksData}
           tasksData={filteredTasks}
           type={type}
