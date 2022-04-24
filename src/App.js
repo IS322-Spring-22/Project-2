@@ -79,11 +79,11 @@ function App() {
         />);
       case 'board':
         return (<TodoBoard
-            setTasksData={setTasksData}
-            tasksData={filteredTasks}
-            type={type}
-            setType={setType}
-            setStatus={setStatus}
+          setTasksData={setTasksData}
+          tasksData={filteredTasks}
+          type={type}
+          setType={setType}
+          setStatus={setStatus}
         />);
     }
   }
