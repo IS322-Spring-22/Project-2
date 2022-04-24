@@ -109,7 +109,7 @@ function App() {
     },
     moveTaskToPreviousColumn: (taskID) => {
       let task = functions.getTask(taskID);
-      let nextColumn = functions.getColumnIndex(task.status) + 1;
+      let nextColumn = functions.getColumnIndex(task.status) - 1;
       if (nextColumn < columnData.length) {
         task.status = columnData[nextColumn].name;
         setTasksData(tasksData);
@@ -117,7 +117,7 @@ function App() {
     },
     moveTaskToNextColumn: (taskID) => {
       let task = functions.getTask(taskID);
-      let nextColumn = functions.getColumnIndex(task.status) - 1;
+      let nextColumn = functions.getColumnIndex(task.status) + 1;
       if (nextColumn > -1) {
         task.status = columnData[nextColumn].name;
         setTasksData(tasksData);
