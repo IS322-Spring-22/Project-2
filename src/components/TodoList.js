@@ -1,5 +1,4 @@
 import React from 'react';
-import TodoCard from "./Todo-Card";
 import ToDoTableRow from "./ToDo-Table-Row";
 
 const TodoList = ({tasksData, setTasksData, setType, setStatus}) => {
