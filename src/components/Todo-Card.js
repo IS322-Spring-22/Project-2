@@ -16,7 +16,7 @@ const ToDoCard = ({functions, task}) => {
         <div className={`card mb-2`} key={task.id}>
             <div className="card-body align-items-center">
                 <h5 className="">{task.title}</h5>
-                <p className="">Type: {task.Type}</p>
+                <p className="mb-0">Type: {task.Type}</p>
                 <p className="">ID: {task.id}</p>
 
                 { task.status !== "Todo" ? (
