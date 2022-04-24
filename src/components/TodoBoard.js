@@ -34,12 +34,12 @@ const TodoBoard = ({functions, tasksData, setTasksData, setType, setStatus}) => 
                     </select>
                 </div>
             </form>
-            <div class="row alight-items-start">
-                <div class="col border rounded-3">
+            <div className="row alight-items-start">
+                <div className="col border rounded-3">
                     <h3>Todo</h3>
                     <div>
                         {functions.getColumnTasks("Todo").map(task => (
-                            <ToDoCard functions={functions} task={task} />
+                            <ToDoCard functions={functions} task={task} key={task.id} />
                         ))}
                     </div>
                 </div>
@@ -47,7 +47,7 @@ const TodoBoard = ({functions, tasksData, setTasksData, setType, setStatus}) => 
                     <h3>In Progress</h3>
                     <div>
                         {functions.getColumnTasks("In Progress").map(task => (
-                            <ToDoCard functions={functions} task={task} />
+                            <ToDoCard functions={functions} task={task} key={task.id} />
                         ))}
                     </div>
                 </div>
@@ -55,7 +55,7 @@ const TodoBoard = ({functions, tasksData, setTasksData, setType, setStatus}) => 
                     <h3>Review</h3>
                     <div>
                         {functions.getColumnTasks("Review").map(task => (
-                            <ToDoCard functions={functions} task={task} />
+                            <ToDoCard functions={functions} task={task} key={task.id} />
                         ))}
                     </div>
                 </div>
@@ -63,7 +63,7 @@ const TodoBoard = ({functions, tasksData, setTasksData, setType, setStatus}) => 
                     <h3>Done</h3>
                     <div>
                         {functions.getColumnTasks("Done").map(task => (
-                            <ToDoCard functions={functions} task={task} />
+                            <ToDoCard functions={functions} task={task} key={task.id} />
                         ))}
                     </div>
                 </div>
