@@ -131,7 +131,7 @@ function App() {
     },
     addTask: (columnName, task) => {
       let newTask = {
-        id: tasksData.length,
+        id: tasksData.length + 1,
         Type: columnName,
         status: 'Todo',
         title: task
