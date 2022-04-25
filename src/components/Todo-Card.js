@@ -3,12 +3,10 @@ import React from 'react';
 const ToDoCard = ({functions, task}) => {
 
     const advanceHandler = (e) => {
-        e.preventDefault();
         functions.moveTaskToNextColumn(task.id);
     };
 
     const retractHandler = (e) => {
-        e.preventDefault();
         functions.moveTaskToPreviousColumn(task.id);
     }
 
