@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Form from "./components/Form";
 import TodoList from "./components/TodoList";
+import TodoBoard from "./components/TodoBoard";
 import Navbar from "./components/Navbar";
 import axios from "axios";
 
@@ -76,6 +77,11 @@ function App() {
           setType={setType}
           setStatus={setStatus}
         />);
+      case 'board':
+        return (<TodoBoard
+          functions={functions}
+          tasksData={tasksData}
+        />);
     }
   }
 
@@ -99,18 +105,18 @@ function App() {
     },
     moveTaskToPreviousColumn: (taskID) => {
       let task = functions.getTask(taskID);
-      let nextColumn = functions.getColumnIndex(task.status) + 1;
+      let nextColumn = functions.getColumnIndex(task.status) - 1;
       if (nextColumn < columnData.length) {
         task.status = columnData[nextColumn].name;
-        setTasksData(tasksData);
+        setTasksData([...tasksData]);
       }
     },
     moveTaskToNextColumn: (taskID) => {
       let task = functions.getTask(taskID);
-      let nextColumn = functions.getColumnIndex(task.status) - 1;
+      let nextColumn = functions.getColumnIndex(task.status) + 1;
       if (nextColumn > -1) {
         task.status = columnData[nextColumn].name;
-        setTasksData(tasksData);
+        setTasksData([...tasksData]);
       }
     },
     moveTaskToColumn: (taskID, newColumnName) => {
@@ -125,7 +131,7 @@ function App() {
     },
     addTask: (columnName, task) => {
       let newTask = {
-        id: tasksData.length,
+        id: tasksData.length + 1,
         Type: columnName,
         status: 'Todo',
         title: task
