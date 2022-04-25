@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import ToDoCard from "./ToDo-Card";
+import ToDoCard from "./Todo-Card";
 
 const TodoBoard = ({functions, tasksData}) => {
 
@@ -21,7 +21,7 @@ const TodoBoard = ({functions, tasksData}) => {
     const columnHandler = (e) => {
         setCurrentColumn(e.target.value);
     }
-    
+
     const loadBoard = useCallback(() => {
         switch(currentColumn){
             case "All":
